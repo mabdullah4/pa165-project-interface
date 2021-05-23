@@ -33,14 +33,6 @@ const Register: React.FC<RegisterProps> = ({ ...props }) => {
 
     const onRegister = (data: IRegisterForm) => {
         authService.register(data);
-
-        props.onRegister({
-            id: Math.floor(Math.random() * 10),
-            name: data.name,
-            email: data.email,
-            type: "MANAGER",
-            createdAt: new Date(),
-        });
         replace("/");
     };
 

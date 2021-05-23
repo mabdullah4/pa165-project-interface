@@ -12,6 +12,7 @@ import Participants from "./Participants";
 import Users from "./Users";
 import UpdateUser from "./UpdateUser";
 import AddEvent from "./AddEvent";
+import AddParticipant from "./AddParticipant";
 
 export interface MainProps {}
 
@@ -34,7 +35,7 @@ const Main: React.FC<MainProps> = () => {
             <MainNavbar />
             <Container className="mt-4">
                 <Switch>
-                    <Route path={`${path}participants/:eventId/add`} component={Events} />
+                    <Route path={`${path}participants/:eventId/add`} component={AddParticipant} />
                     <Route path={`${path}participants/:eventId`} component={Participants} />
                     <Route path={`${path}events/add`} component={AddEvent} />
                     <Route path={`${path}events/:courtId`} component={Events} />

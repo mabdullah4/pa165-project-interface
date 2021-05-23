@@ -55,9 +55,9 @@ const Courts: React.FC<CourtsProps> = () => {
                             <Button size="sm" className="mr-1" to={`/events/${court.id}`} as={Link} variant="warning">
                                 Events
                             </Button>
-                            <Button size="sm" className="mr-1" to={`/court/update/${court.id}`} as={Link} variant="primary">
+                            {/* <Button size="sm" className="mr-1" to={`/court/update/${court.id}`} as={Link} variant="primary">
                                 Edit
-                            </Button>
+                            </Button> */}
                             <Button size="sm" variant="danger" onClick={()=>deleteCourt(court.id)}>
                                 Delete
                             </Button>

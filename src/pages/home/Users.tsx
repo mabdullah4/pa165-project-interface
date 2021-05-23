@@ -16,7 +16,7 @@ export interface UsersProps {
 
 const Users: React.FC<UsersProps> = ({ user }) => {
     const [users, setUsers] = React.useState<IUser[]>([]);
-    const { replace , push } = useHistory();
+    const { replace, push } = useHistory();
 
     React.useLayoutEffect(() => {
         if (user?.type === "TENNIS_USER") {
@@ -30,14 +30,11 @@ const Users: React.FC<UsersProps> = ({ user }) => {
         });
     }, []);
 
-    const deleteUser = (userId:number)=>{
-        userService.delete(userId).then((response) => {
-            toast.success("Successfully delete the court")
-            push('users/');
-        });;
-    }
+    const deleteUser = (userId: number) => {
+        userService.delete(userId)
+    };
     return (
-        <TableWrapper title="Users" addLink="/users/add" addText="Add Users">
+        <TableWrapper title="Users">
             <thead>
                 <tr>
                     <th>#</th>
@@ -53,10 +50,16 @@ const Users: React.FC<UsersProps> = ({ user }) => {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td className="text-right">
-                            <Button size="sm" className="mr-1" to={`/user/update/${user.id}`} as={Link} variant="primary">
+                            <Button
+                                size="sm"
+                                className="mr-1"
+                                to={`/user/update/${user.id}`}
+                                as={Link}
+                                variant="primary"
+                            >
                                 Edit
                             </Button>
-                            <Button size="sm" variant="danger" onClick={()=>deleteUser(user.id)}>
+                            <Button size="sm" variant="danger" onClick={() => deleteUser(user.id)}>
                                 Delete
                             </Button>
                         </td>
