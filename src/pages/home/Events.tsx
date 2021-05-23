@@ -25,7 +25,7 @@ export interface IEvent {
 }
 
 const Events: React.FC<EventsProps> = () => {
-    const { id: courtId } = useParams<{ id: string }>();
+    const { courtId } = useParams<{ courtId: string }>();
     const [events, setEvents] = React.useState<IEvent[]>([]);
 
     React.useEffect(() => {

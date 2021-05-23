@@ -41,9 +41,9 @@ const Courts: React.FC<CourtsProps> = () => {
                         <td>{court.id}</td>
                         <td>{court.name}</td>
                         <td>{court.type}</td>
-                        <td>{court.isAvailable}</td>
+                        <td>{court.isAvailable ? "Yes" : "No"}</td>
                         <td className="text-right">
-                            <Button size="sm" className="mr-1" to="/events/1" as={Link} variant="warning">
+                            <Button size="sm" className="mr-1" to={`/events/${court.id}`} as={Link} variant="warning">
                                 Events
                             </Button>
                             <Button size="sm" className="mr-1" variant="primary">

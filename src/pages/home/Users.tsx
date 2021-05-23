@@ -13,7 +13,7 @@ export interface UsersProps {
 }
 
 const Users: React.FC<UsersProps> = ({ user }) => {
-    const [users, setUsers] = React.useState([]);
+    const [users, setUsers] = React.useState<IUser[]>([]);
     const { replace } = useHistory();
 
     React.useLayoutEffect(() => {
@@ -23,7 +23,7 @@ const Users: React.FC<UsersProps> = ({ user }) => {
     }, []);
 
     React.useEffect(() => {
-        userService.all<[]>().then((response) => {
+        userService.all<IUser[]>().then((response) => {
             setUsers(response.data);
         });
     }, []);
@@ -39,11 +39,11 @@ const Users: React.FC<UsersProps> = ({ user }) => {
                 </tr>
             </thead>
             <tbody>
-                {users.map(() => (
-                    <tr>
-                        <td>1</td>
-                        <td>Ahmad</td>
-                        <td>ahmad@example.com</td>
+                {users.map((user) => (
+                    <tr key={user.id}>
+                        <td>{user.id}</td>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
                         <td className="text-right">
                             <Button size="sm" className="mr-1" variant="primary">
                                 Edit
