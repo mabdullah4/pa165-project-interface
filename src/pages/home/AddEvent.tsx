@@ -1,47 +1,51 @@
 import * as React from "react";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-
-import TableWrapper from "../../components/TableWrapper";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import FormInput from "../../components/Form/FormInput";
+import FormSelect from "../../components/Form/FormSelect";
 
 export interface AddEventProps {}
 
+export interface IEventForm {
+    name: string;
+    type: string;
+}
+
 const AddEvent: React.FC<AddEventProps> = () => {
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm<IEventForm>();
+
+    const onAddEvent = () => {};
+
     return (
-        <TableWrapper title="Events" addLink="/events/add" addText="Add Events">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Kids Tournament</td>
-                    <td>Kids Tournament for charity</td>
-                    <td>Tournament</td>
-                    <td>12/12/2021</td>
-                    <td>10:15 am - 02:30 pm</td>
-                    <td className="text-right">
-                        <Button as={Link} to="/participants" size="sm" className="mr-1" variant="warning">
-                            Participants
-                        </Button>
-                        <Button size="sm" className="mr-1" variant="primary">
-                            Edit
-                        </Button>
-                        <Button size="sm" variant="danger">
-                            Delete
-                        </Button>
-                    </td>
-                </tr>
-            </tbody>
-        </TableWrapper>
+        <Form onSubmit={handleSubmit(onAddEvent)}>
+            <Row>
+                <Col xs={12} md={6}>
+                    <FormInput
+                        name="name"
+                        error={errors.name?.message}
+                        register={register("name", { required: "name is required" })}
+                    />
+                </Col>
+                <Col xs={12} md={6}>
+                    <FormSelect
+                        name="type"
+                        error={errors.type?.message}
+                        register={register("type", { required: "type is required" })}
+                    >
+                        <option value="">Lesson</option>
+                        <option value="">Tournament</option>
+                    </FormSelect>
+                </Col>
+
+                <Col xs={12}>
+                    <Button variant="success">Add</Button>
+                </Col>
+            </Row>
+        </Form>
     );
 };
 
