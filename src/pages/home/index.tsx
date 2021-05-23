@@ -4,10 +4,14 @@ import { Switch, RouteProps, Route, Redirect, useRouteMatch } from "react-router
 
 import MainNavbar from "../../components/MainNavbar";
 import Courts from "./Courts";
+import AddCourts from "./AddCourt";
+import UpdateCourt from "./UpdateCourt";
 import Events from "./Events";
 import Home from "./Home";
 import Participants from "./Participants";
 import Users from "./Users";
+import UpdateUser from "./UpdateUser";
+import AddEvent from "./AddEvent";
 
 export interface MainProps {}
 
@@ -32,12 +36,14 @@ const Main: React.FC<MainProps> = () => {
                 <Switch>
                     <Route path={`${path}participants/:eventId/add`} component={Events} />
                     <Route path={`${path}participants/:eventId`} component={Participants} />
-                    <Route path={`${path}events/:courtId/add`} component={Events} />
+                    <Route path={`${path}events/add`} component={AddEvent} />
                     <Route path={`${path}events/:courtId`} component={Events} />
-                    <Route path={`${path}courts/add`} component={Courts} />
+                    <Route path={`${path}courts/add`} component={AddCourts} />
+                    <Route path={`${path}court/update/:courtId`} component={UpdateCourt} />
                     <Route path={`${path}courts`} component={Courts} />
                     <Route path={`${path}users/add`} component={Users} />
                     <Route path={`${path}users`} component={Users} />
+                    <Route path={`${path}user/update/:userId`} component={UpdateUser} />
                     <Route path={path} component={Home} />
                 </Switch>
             </Container>

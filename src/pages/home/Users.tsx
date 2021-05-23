@@ -2,6 +2,8 @@ import * as React from "react";
 import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import TableWrapper from "../../components/TableWrapper";
 import userService from "../../service/user";
@@ -14,7 +16,7 @@ export interface UsersProps {
 
 const Users: React.FC<UsersProps> = ({ user }) => {
     const [users, setUsers] = React.useState<IUser[]>([]);
-    const { replace } = useHistory();
+    const { replace , push } = useHistory();
 
     React.useLayoutEffect(() => {
         if (user?.type === "TENNIS_USER") {
@@ -28,6 +30,12 @@ const Users: React.FC<UsersProps> = ({ user }) => {
         });
     }, []);
 
+    const deleteUser = (userId:number)=>{
+        userService.delete(userId).then((response) => {
+            toast.success("Successfully delete the court")
+            push('users/');
+        });;
+    }
     return (
         <TableWrapper title="Users" addLink="/users/add" addText="Add Users">
             <thead>
@@ -45,10 +53,10 @@ const Users: React.FC<UsersProps> = ({ user }) => {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td className="text-right">
-                            <Button size="sm" className="mr-1" variant="primary">
+                            <Button size="sm" className="mr-1" to={`/user/update/${user.id}`} as={Link} variant="primary">
                                 Edit
                             </Button>
-                            <Button size="sm" variant="danger">
+                            <Button size="sm" variant="danger" onClick={()=>deleteUser(user.id)}>
                                 Delete
                             </Button>
                         </td>

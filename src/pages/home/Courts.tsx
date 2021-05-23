@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import TableWrapper from "../../components/TableWrapper";
 import courtService from "../../service/court";
+import { IEvent } from "./Events";
 
 export interface ICourt {
     id: number;
@@ -11,19 +13,26 @@ export interface ICourt {
     location: string;
     type: string;
     isAvailable: boolean;
+    events:IEvent;
 }
 
 export interface CourtsProps {}
 
 const Courts: React.FC<CourtsProps> = () => {
     const [courts, setCourts] = React.useState<ICourt[]>([]);
-
+    const  { push } = useHistory();
     React.useEffect(() => {
         courtService.fetch<ICourt[]>().then((response) => {
             setCourts(response.data);
         });
     }, []);
 
+    const deleteCourt = (courtId:number)=>{
+        courtService.delete(courtId).then((response) => {
+            toast.success("Successfully delete the court")
+            push('courts/');
+        });;
+    }
     return (
         <TableWrapper title="Courts" addLink="/courts/add" addText="Add Courts">
             <thead>
@@ -46,10 +55,10 @@ const Courts: React.FC<CourtsProps> = () => {
                             <Button size="sm" className="mr-1" to={`/events/${court.id}`} as={Link} variant="warning">
                                 Events
                             </Button>
-                            <Button size="sm" className="mr-1" variant="primary">
+                            <Button size="sm" className="mr-1" to={`/court/update/${court.id}`} as={Link} variant="primary">
                                 Edit
                             </Button>
-                            <Button size="sm" variant="danger">
+                            <Button size="sm" variant="danger" onClick={()=>deleteCourt(court.id)}>
                                 Delete
                             </Button>
                         </td>

@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import React , {useState , useEffect} from "react";
+
 import FormInput from "../../components/Form/FormInput";
+
+import { Form, Row ,Col, Button} from "react-bootstrap";
+import { useForm } from "react-hook-form";
 import FormSelect from "../../components/Form/FormSelect";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
+import {ICourt} from "./Courts"
+import eventService from "../../service/event";
 import courtService from "../../service/court";
-
-import { toast } from 'react-toastify';
-
-export interface AddCourtProps {}
-
+import { toast } from "react-toastify";
 export interface ICourtForm {
     name: string;
     type: string;
@@ -17,38 +17,58 @@ export interface ICourtForm {
     isAvailable:boolean;
 }
 
-const AddCourt: React.FC<AddCourtProps> = () => {
-    const { push } = useHistory();
+const UpdateCourt:React.FC =()=>{
+    const { courtId } = useParams<{ courtId: string }>();
+    const { push } = useHistory()
+    const [court , setCourt] = useState<ICourt>();
+    const [loading, setLoading] = useState<boolean>(true);
+
+     useEffect(() => {
+        courtService.fetch<ICourt>(parseInt(courtId)).then((response) => {
+            if (response.data ==null) {
+                toast.error("Court No found");
+                push('/courts/');
+            }
+            setCourt(response.data);
+            
+            setLoading(false);
+        });
+    }, []);
     const {
         register,
         formState: { errors },
         handleSubmit,
     } = useForm<ICourtForm>();
 
-    const onAddCourt = (data:ICourtForm) => {
-        data.isAvailable = true;
-        courtService.create(data).then((response) => {
-            toast.success("Successfully add new court")
+     const onUpdateCourt = (data:ICourtForm)=>{
+        courtService.update(data , parseInt(courtId)).then((response) => {
+            toast.success("Successfully update the court")
             push('courts/');
 
         });;
-    };
-
-    return (
-        <Form onSubmit={handleSubmit(onAddCourt)}>
+     }   
+     if (loading) {
+        return (
+            <div></div>
+        );
+    }
+    return(
+        <Form onSubmit={handleSubmit(onUpdateCourt)}>
             <Row>
                 <Col xs={12} md={6}>
-                    <FormInput
-                        name="name"
-                        title="Court Name"
-                        error={errors.name?.message}
-                        register={register("name", { required: "Court Name is required" })}
-                    />
+                        <FormInput 
+                          name="name"
+                          title="Court Name"
+                          value={court?.name}
+                          error={errors.name?.message}
+                          register={register("name", { required: "Court Name is required" })}
+                        />
                 </Col>
                 <Col xs={12} md={6}>
                 <FormInput
                         name="location"
                         title="Location"
+                        value={court?.location}
                         error={errors.location?.message}
                         register={register("location", { required: "Location is required" })}
                     />
@@ -57,6 +77,7 @@ const AddCourt: React.FC<AddCourtProps> = () => {
                     <FormSelect
                         name="type"
                         title="Court Type"
+                        value={court?.type}
                         error={errors.type?.message}
                         register={register("type", { required: "Court Type is required" })}
                     >
@@ -77,8 +98,9 @@ const AddCourt: React.FC<AddCourtProps> = () => {
                  </div>
                 </Col>
             </Row>
-        </Form>
-    );
-};
 
-export default AddCourt;
+        </Form>
+    )
+}
+
+export default UpdateCourt;
