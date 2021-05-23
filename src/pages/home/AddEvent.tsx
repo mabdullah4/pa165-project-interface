@@ -7,23 +7,23 @@ import FormInput from "../../components/Form/FormInput";
 import FormSelect from "../../components/Form/FormSelect";
 import courtService from "../../service/court";
 import eventService from "../../service/event";
-import {ICourt} from "./Courts";
+import { ICourt } from "./Courts";
 
 export interface AddEventProps {}
 
 export interface IEventForm {
     name: string;
     description: string;
-    eventType: "LESSON"|"TOURNAMENT"|"TENNIS_USER";
+    eventType: "LESSON" | "TOURNAMENT" | "TENNIS_USER";
     startTime: string;
     endTime: string;
     eventDate: Date;
-    courtId:number;
+    courtId: number;
 }
 
 const AddEvent: React.FC<AddEventProps> = () => {
     const [courts, setCourts] = React.useState<ICourt[]>([]);
-    const { push } = useHistory();
+    const { replace } = useHistory();
     const {
         register,
         formState: { errors },
@@ -36,25 +36,24 @@ const AddEvent: React.FC<AddEventProps> = () => {
         });
     }, []);
 
-    const onAddEvent = (data:IEventForm) => {
+    const onAddEvent = (data: IEventForm) => {
         eventService.create(data).then((response) => {
-            toast.success("Successfully add new event")
-            push('courts/');
-
-        });;
+            toast.success("Successfully add new event");
+            replace("/");
+        });
     };
 
     return (
         <Form onSubmit={handleSubmit(onAddEvent)}>
             <Row>
-            <Col xs={12} md={12}>
+                <Col xs={12} md={12}>
                     <FormSelect
                         name="courtId"
                         title="Select Court"
                         error={errors.courtId?.message}
                         register={register("courtId", { required: "Court is required" })}
                     >
-                        {courts.map((court)=>(
+                        {courts.map((court) => (
                             <option value={court.id}>{court.name}</option>
                         ))}
                     </FormSelect>
@@ -65,6 +64,14 @@ const AddEvent: React.FC<AddEventProps> = () => {
                         title="Event Name"
                         error={errors.name?.message}
                         register={register("name", { required: "Event Name is required" })}
+                    />
+                </Col>
+                <Col xs={12} md={6}>
+                    <FormInput
+                        name="description"
+                        title="Event Description"
+                        error={errors.description?.message}
+                        register={register("description")}
                     />
                 </Col>
                 <Col xs={12} md={6}>
@@ -89,7 +96,7 @@ const AddEvent: React.FC<AddEventProps> = () => {
                     />
                 </Col>
                 <Col xs={12} md={6}>
-                  <FormInput
+                    <FormInput
                         name="startTime"
                         title="Start Time"
                         type="time"
@@ -106,10 +113,11 @@ const AddEvent: React.FC<AddEventProps> = () => {
                         register={register("endTime", { required: "End time is required" })}
                     />
                 </Col>
-                
 
                 <Col xs={12}>
-                    <Button variant="success" type="submit">Add</Button>
+                    <Button variant="success" type="submit">
+                        Add
+                    </Button>
                 </Col>
             </Row>
         </Form>

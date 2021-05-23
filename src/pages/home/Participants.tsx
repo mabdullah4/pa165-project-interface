@@ -13,7 +13,7 @@ export interface IParticipant {
 }
 
 const Participants: React.FC<ParticipantsProps> = () => {
-    const { id: eventId } = useParams<{ id: string }>();
+    const { eventId } = useParams<{ eventId: string }>();
     const [participants, setParticipants] = React.useState<IParticipant[]>([]);
 
     React.useEffect(() => {
@@ -22,8 +22,14 @@ const Participants: React.FC<ParticipantsProps> = () => {
         });
     }, []);
 
+    const onDeleteParticipant = (participantId: number) => () => {
+        participantService.delete(participantId).finally(() => {
+            setParticipants(participants.filter((participant) => participant.id !== participantId));
+        });
+    };
+
     return (
-        <TableWrapper title="Participants" addLink={`/particpants/${eventId}/add`} addText="Add Participants">
+        <TableWrapper title="Participants" addLink={`/participants/${eventId}/add`} addText="Add Participants">
             <thead>
                 <tr>
                     <th>#</th>
@@ -37,7 +43,7 @@ const Participants: React.FC<ParticipantsProps> = () => {
                         <td>{participant.id}</td>
                         <td>{participant.name}</td>
                         <td className="text-right">
-                            <Button size="sm" variant="danger">
+                            <Button size="sm" onClick={onDeleteParticipant(participant.id)} variant="danger">
                                 Delete
                             </Button>
                         </td>

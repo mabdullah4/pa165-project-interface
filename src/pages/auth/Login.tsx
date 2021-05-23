@@ -5,16 +5,22 @@ import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { Dispatch } from "redux";
 import authService from "../../service/auth";
+import { IUser } from "../../store/auth";
 import { SetLogin } from "../../store/auth/actions";
 import emailValidation from "../../validation/emailValidation";
 
 export interface LoginProps {
-    onLogin: any;
+    onLogin: typeof SetLogin;
 }
 
 export interface ILoginForm {
     email: string;
     password: string;
+}
+
+export interface ILoginResponse {
+    token: string;
+    user: IUser;
 }
 
 const Login: React.FC<LoginProps> = ({ ...props }) => {
@@ -26,10 +32,13 @@ const Login: React.FC<LoginProps> = ({ ...props }) => {
     } = useForm<ILoginForm>();
 
     const onLogin = (data: ILoginForm) => {
-        authService.login(data);
-
-        props.onLogin();
-        replace("/");
+        authService
+            .login<ILoginResponse>(data)
+            .then((response) => {
+                props.onLogin(response.data);
+                replace("/");
+            })
+            .catch(() => {});
     };
 
     return (
@@ -66,27 +75,12 @@ const Login: React.FC<LoginProps> = ({ ...props }) => {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-                <Link className="btn btn-warning ml-2" to="/auth/register">
+                {/* <Link className="btn btn-warning ml-2" to="/auth/register">
                     Register
-                </Link>
+                </Link> */}
             </div>
         </Form>
     );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        onLogin: () =>
-            dispatch(
-                SetLogin({
-                    id: 1,
-                    name: "Ahmad",
-                    email: "ahmad@example.com",
-                    type: "MANAGER",
-                    createdAt: new Date(),
-                })
-            ),
-    };
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(null, { onLogin: SetLogin })(Login);

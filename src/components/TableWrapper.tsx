@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 export interface TableWrapperProps {
     title: string;
-    addText: string;
-    addLink: string;
+    addText?: string;
+    addLink?: string;
 }
 
 const TableWrapper: React.FC<TableWrapperProps> = ({ title, addText, addLink, children }) => {
@@ -16,9 +16,11 @@ const TableWrapper: React.FC<TableWrapperProps> = ({ title, addText, addLink, ch
                     <h5 className="mb-0">{title}</h5>
                 </Col>
                 <Col className="ml-auto text-right">
-                    <Button as={Link} to={addLink} size="sm" variant="primary">
-                        {addText}
-                    </Button>
+                    {addLink && addText ? (
+                        <Button as={Link} to={addLink} size="sm" variant="primary">
+                            {addText}
+                        </Button>
+                    ) : null}
                 </Col>
             </Row>
             <Table className="text-center">{children}</Table>

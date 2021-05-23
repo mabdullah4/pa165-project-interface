@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 import TableWrapper from "../../components/TableWrapper";
-import { dateFormat, timeFormat } from "../../helper/dataHelper";
+import { dateFormat } from "../../helper/dataHelper";
 import eventService from "../../service/event";
 import { IUser } from "../../store/auth";
 import { ICourt } from "./Courts";
@@ -34,6 +34,12 @@ const Events: React.FC<EventsProps> = () => {
         });
     }, []);
 
+    const onDeleteEvent = (eventId: number) => () => {
+        eventService.delete(eventId).then(() => {
+            setEvents(events.filter((event) => event.id !== eventId));
+        });
+    };
+
     return (
         <TableWrapper title="Events" addLink="/events/add" addText="Add Events">
             <thead>
@@ -56,16 +62,22 @@ const Events: React.FC<EventsProps> = () => {
                         <td>{event.eventType}</td>
                         <td>{dateFormat(event.eventDate)}</td>
                         <td>
-                            {timeFormat(event.startTime)} - {timeFormat(event.endTime)}
+                            {event.startTime} - {event.endTime}
                         </td>
                         <td className="text-right">
-                            <Button as={Link} to="/participants" size="sm" className="mr-1" variant="warning">
+                            <Button
+                                as={Link}
+                                to={`/participants/${event.id}`}
+                                size="sm"
+                                className="mr-1"
+                                variant="warning"
+                            >
                                 Participants
                             </Button>
-                            <Button size="sm" className="mr-1" variant="primary">
+                            {/* <Button size="sm" className="mr-1" variant="primary">
                                 Edit
-                            </Button>
-                            <Button size="sm" variant="danger">
+                            </Button> */}
+                            <Button size="sm" onClick={onDeleteEvent(event.id)} variant="danger">
                                 Delete
                             </Button>
                         </td>

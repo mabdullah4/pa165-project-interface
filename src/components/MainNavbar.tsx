@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { SetLogout } from "../store/auth/actions";
 
@@ -15,7 +15,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ ...props }) => {
     return (
         <Navbar bg="light">
             <Container>
-                <Navbar.Brand href="#home">Tennis Court Manager</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">Tennis Court Manager</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
