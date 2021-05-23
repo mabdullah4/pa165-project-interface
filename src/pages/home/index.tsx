@@ -6,6 +6,7 @@ import MainNavbar from "../../components/MainNavbar";
 import Courts from "./Courts";
 import Events from "./Events";
 import Home from "./Home";
+import Participants from "./Participants";
 import Users from "./Users";
 
 export interface MainProps {}
@@ -29,6 +30,9 @@ const Main: React.FC<MainProps> = () => {
             <MainNavbar />
             <Container className="mt-4">
                 <Switch>
+                    <Route path={`${path}participants/:eventId/add`} component={Events} />
+                    <Route path={`${path}participants/:eventId`} component={Participants} />
+                    <Route path={`${path}events/:courtId/add`} component={Events} />
                     <Route path={`${path}events/:courtId`} component={Events} />
                     <Route path={`${path}courts/add`} component={Courts} />
                     <Route path={`${path}courts`} component={Courts} />

@@ -1,31 +1,49 @@
 import * as React from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import FormInput from "../../components/Form/FormInput";
 import FormSelect from "../../components/Form/FormSelect";
 
-import TableWrapper from "../../components/TableWrapper";
+export interface AddCourtProps {}
 
-export interface CourtsProps {}
+export interface ICourtForm {
+    name: string;
+    type: string;
+}
 
-const Courts: React.FC<CourtsProps> = () => {
-    const { register } = useForm();
+const AddCourt: React.FC<AddCourtProps> = () => {
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm<ICourtForm>();
+
+    const onAddCourt = () => {};
 
     return (
-        <Row>
-            <Col xs={12} md={6}>
-                <FormInput name="name" register={register("name")} />
-            </Col>
-            <Col xs={12} md={6}>
-                <FormSelect name="name" register={register("name")}>
-                    <option value="">Grass</option>
-                    <option value="">Sand</option>
-                    <option value="">Grass</option>
-                </FormSelect>
-            </Col>
-        </Row>
+        <Form onSubmit={handleSubmit(onAddCourt)}>
+            <Row>
+                <Col xs={12} md={6}>
+                    <FormInput
+                        name="name"
+                        error={errors.name?.message}
+                        register={register("name", { required: "name is required" })}
+                    />
+                </Col>
+                <Col xs={12} md={6}>
+                    <FormSelect
+                        name="name"
+                        error={errors.type?.message}
+                        register={register("type", { required: "type is required" })}
+                    >
+                        <option value="Grass">Grass</option>
+                        <option value="Sand">Sand</option>
+                        <option value="Clay">Clay</option>
+                    </FormSelect>
+                </Col>
+            </Row>
+        </Form>
     );
 };
 
-export default Courts;
+export default AddCourt;

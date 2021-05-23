@@ -5,6 +5,8 @@ export interface IUser {
     id: number;
     name: string;
     email: string;
+    createdAt: Date;
+    type: "MANAGER" | "TENNIS_USER";
 }
 
 interface IAuthState {

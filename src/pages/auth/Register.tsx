@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import FormInput from "../../components/Form/FormInput";
+import authService from "../../service/auth";
 
 import { SetLogin } from "../../store/auth/actions";
 import emailValidation from "../../validation/emailValidation";
@@ -31,10 +32,14 @@ const Register: React.FC<RegisterProps> = ({ ...props }) => {
     const password = watch("password");
 
     const onRegister = (data: IRegisterForm) => {
+        authService.register(data);
+
         props.onRegister({
             id: Math.floor(Math.random() * 10),
             name: data.name,
             email: data.email,
+            type: "MANAGER",
+            createdAt: new Date(),
         });
         replace("/");
     };
@@ -47,9 +52,9 @@ const Register: React.FC<RegisterProps> = ({ ...props }) => {
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                     {...register("name", {
-                        required: true,
-                        minLength: 3,
-                        maxLength: 120,
+                        required: "name is required",
+                        minLength: "Min.3 characters",
+                        maxLength: "Max.120 characters",
                     })}
                     type="text"
                     name="name"
@@ -61,7 +66,7 @@ const Register: React.FC<RegisterProps> = ({ ...props }) => {
             <FormInput
                 name="email"
                 register={register("email", {
-                    required: true,
+                    required: "email is required",
                     validate: emailValidation,
                 })}
                 error={errors.email?.message}
@@ -70,19 +75,9 @@ const Register: React.FC<RegisterProps> = ({ ...props }) => {
             <FormInput
                 name="password"
                 register={register("password", {
-                    required: true,
-                    minLength: 5,
-                    maxLength: 32,
-                })}
-                error={errors.password?.message}
-            />
-
-            <FormInput
-                name="password"
-                register={register("password", {
-                    required: true,
-                    minLength: 5,
-                    maxLength: 32,
+                    required: "password is required",
+                    minLength: "Min.5 characters",
+                    maxLength: "Max.32 characters",
                 })}
                 error={errors.password?.message}
             />
@@ -91,7 +86,6 @@ const Register: React.FC<RegisterProps> = ({ ...props }) => {
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                     {...register("confirm_password", {
-                        required: true,
                         validate: (value) => value === password || "Passwords does not match",
                     })}
                     type="password"

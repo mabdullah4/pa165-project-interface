@@ -10,7 +10,7 @@ export interface FormInputProps {
     error?: string;
 }
 
-const FormInput: React.SFC<FormInputProps> = ({ name, register, type = "text", title, error }) => {
+const FormInput: React.FC<FormInputProps> = ({ name, register, type = "text", title, error }) => {
     return (
         <Form.Group controlId={name}>
             <Form.Label>{title || name}</Form.Label>

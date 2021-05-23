@@ -1,18 +1,18 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const instance = axios.create({
-    baseURL: "/",
+const service = axios.create({
+    baseURL: "http://localhost:8080/",
     headers: {
         Accept: "application/json",
     },
 });
 
-instance.interceptors.request.use((config: AxiosRequestConfig) => {
+service.interceptors.request.use((config: AxiosRequestConfig) => {
     return config;
 });
 
-instance.interceptors.response.use((response: AxiosResponse) => {
+service.interceptors.response.use((response: AxiosResponse) => {
     return response;
 });
 
-export default instance;
+export default service;

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { Dispatch } from "redux";
+import authService from "../../service/auth";
 import { SetLogin } from "../../store/auth/actions";
 import emailValidation from "../../validation/emailValidation";
 
@@ -25,6 +26,8 @@ const Login: React.FC<LoginProps> = ({ ...props }) => {
     } = useForm<ILoginForm>();
 
     const onLogin = (data: ILoginForm) => {
+        authService.login(data);
+
         props.onLogin();
         replace("/");
     };
@@ -36,7 +39,7 @@ const Login: React.FC<LoginProps> = ({ ...props }) => {
             <Form.Group controlId="email">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
-                    {...register("email", { required: true, validate: emailValidation })}
+                    {...register("email", { required: "email is required", validate: emailValidation })}
                     type="email"
                     name="email"
                     placeholder="Enter email"
@@ -47,7 +50,11 @@ const Login: React.FC<LoginProps> = ({ ...props }) => {
             <Form.Group controlId="password">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
-                    {...register("password", { required: true, minLength: 5, maxLength: 32 })}
+                    {...register("password", {
+                        required: "password is required",
+                        minLength: "Min.5 characters",
+                        maxLength: "Max.32 characters",
+                    })}
                     type="password"
                     name="password"
                     placeholder="******"
@@ -75,6 +82,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
                     id: 1,
                     name: "Ahmad",
                     email: "ahmad@example.com",
+                    type: "MANAGER",
+                    createdAt: new Date(),
                 })
             ),
     };
