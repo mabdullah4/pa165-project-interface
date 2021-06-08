@@ -1,6 +1,5 @@
 import { AuthEvents } from "./events";
 import { makeAction, IActionUnion } from "../actions";
-import { IUser } from ".";
 import { ILoginResponse } from "../../pages/auth/Login";
 
 export const SetLogin = makeAction<AuthEvents.LOGIN, ILoginResponse>(AuthEvents.LOGIN);

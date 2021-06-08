@@ -31,15 +31,18 @@ const AddEvent: React.FC<AddEventProps> = () => {
     } = useForm<IEventForm>();
 
     React.useEffect(() => {
-        courtService.fetch<ICourt[]>().then((response) => {
-            setCourts(response.data);
-        });
+        courtService
+            .fetch<ICourt[]>()
+            .then((response) => {
+                setCourts(response.data);
+            })
+            .catch(console.error);
     }, []);
 
     const onAddEvent = (data: IEventForm) => {
-        eventService.create(data).then((response) => {
+        eventService.create(data).then(() => {
             toast.success("Successfully add new event");
-            replace("/");
+            replace(`/pa165/courts/`);
         });
     };
 
@@ -54,7 +57,9 @@ const AddEvent: React.FC<AddEventProps> = () => {
                         register={register("courtId", { required: "Court is required" })}
                     >
                         {courts.map((court) => (
-                            <option value={court.id}>{court.name}</option>
+                            <option key={court.id} value={court.id}>
+                                {court.name}
+                            </option>
                         ))}
                     </FormSelect>
                 </Col>

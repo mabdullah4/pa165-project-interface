@@ -2,8 +2,7 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { Dispatch } from "redux";
+import { useHistory } from "react-router-dom";
 import authService from "../../service/auth";
 import { IUser } from "../../store/auth";
 import { SetLogin } from "../../store/auth/actions";
@@ -75,7 +74,7 @@ const Login: React.FC<LoginProps> = ({ ...props }) => {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-                {/* <Link className="btn btn-warning ml-2" to="/auth/register">
+                {/* <Link className="btn btn-warning ml-2" to="/pa165/auth/register">
                     Register
                 </Link> */}
             </div>

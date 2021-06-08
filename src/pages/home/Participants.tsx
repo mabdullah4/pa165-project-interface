@@ -17,19 +17,25 @@ const Participants: React.FC<ParticipantsProps> = () => {
     const [participants, setParticipants] = React.useState<IParticipant[]>([]);
 
     React.useEffect(() => {
-        participantService.fetchByEvent<IParticipant[]>(parseInt(eventId)).then((response) => {
-            setParticipants(response.data);
-        });
+        participantService
+            .fetchByEvent<IParticipant[]>(parseInt(eventId))
+            .then((response) => {
+                setParticipants(response.data);
+            })
+            .catch(console.error);
     }, []);
 
     const onDeleteParticipant = (participantId: number) => () => {
-        participantService.delete(participantId).finally(() => {
-            setParticipants(participants.filter((participant) => participant.id !== participantId));
-        });
+        participantService
+            .delete(participantId)
+            .finally(() => {
+                setParticipants(participants.filter((participant) => participant.id !== participantId));
+            })
+            .catch(console.error);
     };
 
     return (
-        <TableWrapper title="Participants" addLink={`/participants/${eventId}/add`} addText="Add Participants">
+        <TableWrapper title="Participants" addLink={`/pa165/participants/${eventId}/add`} addText="Add Participants">
             <thead>
                 <tr>
                     <th>#</th>
