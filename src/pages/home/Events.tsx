@@ -29,19 +29,25 @@ const Events: React.FC<EventsProps> = () => {
     const [events, setEvents] = React.useState<IEvent[]>([]);
 
     React.useEffect(() => {
-        eventService.fetchByCourt<IEvent[]>(parseInt(courtId)).then((response) => {
-            setEvents(response.data);
-        });
+        eventService
+            .fetchByCourt<IEvent[]>(parseInt(courtId))
+            .then((response) => {
+                setEvents(response.data);
+            })
+            .catch(console.error);
     }, []);
 
     const onDeleteEvent = (eventId: number) => () => {
-        eventService.delete(eventId).then(() => {
-            setEvents(events.filter((event) => event.id !== eventId));
-        });
+        eventService
+            .delete(eventId)
+            .then(() => {
+                setEvents(events.filter((event) => event.id !== eventId));
+            })
+            .catch(console.error);
     };
 
     return (
-        <TableWrapper title="Events" addLink="/events/add" addText="Add Events">
+        <TableWrapper title="Events" addLink="/pa165/events/add" addText="Add Events">
             <thead>
                 <tr>
                     <th>#</th>
@@ -50,6 +56,7 @@ const Events: React.FC<EventsProps> = () => {
                     <th>Type</th>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>Participants</th>
                     <th></th>
                 </tr>
             </thead>
@@ -67,7 +74,7 @@ const Events: React.FC<EventsProps> = () => {
                         <td className="text-right">
                             <Button
                                 as={Link}
-                                to={`/participants/${event.id}`}
+                                to={`/pa165/participants/${event.id}`}
                                 size="sm"
                                 className="mr-1"
                                 variant="warning"

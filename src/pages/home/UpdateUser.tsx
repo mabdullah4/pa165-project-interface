@@ -23,15 +23,18 @@ const UpdateCourt: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        userService.fetch<IUser>(parseInt(userId)).then((response) => {
-            if (response.data == null) {
-                toast.error("User No found");
-                replace("/users/");
-            }
-            setUser(response.data);
+        userService
+            .fetch<IUser>(parseInt(userId))
+            .then((response) => {
+                if (response.data == null) {
+                    toast.error("User No found");
+                    replace("/users/");
+                }
+                setUser(response.data);
 
-            setLoading(false);
-        });
+                setLoading(false);
+            })
+            .catch(console.error);
     }, []);
     const {
         register,
@@ -40,10 +43,13 @@ const UpdateCourt: React.FC = () => {
     } = useForm<IUserForm>();
 
     const onUpdateCourt = (data: IUserForm) => {
-        userService.update(data, parseInt(userId)).then((response) => {
-            toast.success("Successfully update the user");
-            replace("/users/");
-        });
+        userService
+            .update(data, parseInt(userId))
+            .then((response) => {
+                toast.success("Successfully update the user");
+                replace("//pa165/users/");
+            })
+            .catch(console.error);
     };
     if (loading) {
         return <div>loading...</div>;
@@ -88,7 +94,7 @@ const UpdateCourt: React.FC = () => {
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
-                        <Link className="btn btn-info ml-2" to="/users/">
+                        <Link className="btn btn-info ml-2" to="/pa165/users/">
                             Back
                         </Link>
                     </div>

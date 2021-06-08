@@ -6,15 +6,15 @@ import FormSelect from "../../components/Form/FormSelect";
 import { Link, useHistory } from "react-router-dom";
 import courtService from "../../service/court";
 
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export interface AddCourtProps {}
 
 export interface ICourtForm {
     name: string;
     type: string;
-    location:string;
-    isAvailable:boolean;
+    location: string;
+    isAvailable: boolean;
 }
 
 const AddCourt: React.FC<AddCourtProps> = () => {
@@ -25,13 +25,15 @@ const AddCourt: React.FC<AddCourtProps> = () => {
         handleSubmit,
     } = useForm<ICourtForm>();
 
-    const onAddCourt = (data:ICourtForm) => {
+    const onAddCourt = (data: ICourtForm) => {
         data.isAvailable = true;
-        courtService.create(data).then((response) => {
-            toast.success("Successfully add new court")
-            push('courts/');
-
-        });;
+        courtService
+            .create(data)
+            .then((response) => {
+                toast.success("Successfully add new court");
+                push("courts/");
+            })
+            .catch(console.error);
     };
 
     return (
@@ -46,7 +48,7 @@ const AddCourt: React.FC<AddCourtProps> = () => {
                     />
                 </Col>
                 <Col xs={12} md={6}>
-                <FormInput
+                    <FormInput
                         name="location"
                         title="Location"
                         error={errors.location?.message}
@@ -65,16 +67,16 @@ const AddCourt: React.FC<AddCourtProps> = () => {
                         <option value="Clay">Clay</option>
                     </FormSelect>
                 </Col>
-                
+
                 <Col xs={12}>
-                   <div className="text-center">
+                    <div className="text-center">
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
-                        <Link className="btn btn-info ml-2" to="/courts/">
+                        <Link className="btn btn-info ml-2" to="/pa165/courts/">
                             Back
                         </Link>
-                 </div>
+                    </div>
                 </Col>
             </Row>
         </Form>

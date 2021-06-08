@@ -91,7 +91,7 @@ const Register: React.FC<RegisterProps> = ({ ...props }) => {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-                <Link className="btn btn-warning ml-2" to="/auth">
+                <Link className="btn btn-warning ml-2" to="/pa165/auth">
                     Login
                 </Link>
             </div>

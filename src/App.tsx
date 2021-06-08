@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Auth from "./pages/auth";
 import Main, { ProtectedRoute } from "./pages/home/index";
 import { IAppState } from "./store/rootReducer";
@@ -11,8 +11,9 @@ export interface IAppProps {
 const App: React.FC<IAppProps> = ({ isLoggedIn }) => (
     <div>
         <Switch>
-            <Route path="/auth" component={Auth} />
-            <ProtectedRoute path="/" component={Main} isLoggedIn={isLoggedIn} />
+            <Route path="/pa165/auth" component={Auth} />
+            <ProtectedRoute path="/pa165" component={Main} isLoggedIn={isLoggedIn} />
+            <Redirect exact from="/" to="/pa165" />
         </Switch>
     </div>
 );

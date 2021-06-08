@@ -1,9 +1,7 @@
 import * as React from "react";
 import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 
 import TableWrapper from "../../components/TableWrapper";
 import userService from "../../service/user";
@@ -14,24 +12,25 @@ export interface UsersProps {
     user?: IUser;
 }
 
-const Users: React.FC<UsersProps> = ({ user }) => {
+const Users: React.FC<UsersProps> = ({ user: loggedInUser }) => {
     const [users, setUsers] = React.useState<IUser[]>([]);
-    const { replace, push } = useHistory();
-
-    React.useLayoutEffect(() => {
-        if (user?.type === "TENNIS_USER") {
-            replace("/");
-        }
-    }, []);
 
     React.useEffect(() => {
-        userService.all<IUser[]>().then((response) => {
-            setUsers(response.data);
-        });
+        userService
+            .all<IUser[]>()
+            .then((response) => {
+                setUsers(response.data);
+            })
+            .catch(console.error);
     }, []);
 
-    const deleteUser = (userId: number) => {
-        userService.delete(userId)
+    const deleteUser = (userId: number) => () => {
+        userService
+            .delete(userId)
+            .then(() => {
+                setUsers(users.filter((user) => user.id !== userId));
+            })
+            .catch(console.error);
     };
     return (
         <TableWrapper title="Users">
@@ -53,15 +52,17 @@ const Users: React.FC<UsersProps> = ({ user }) => {
                             <Button
                                 size="sm"
                                 className="mr-1"
-                                to={`/user/update/${user.id}`}
+                                to={`/pa165/user/update/${user.id}`}
                                 as={Link}
                                 variant="primary"
                             >
                                 Edit
                             </Button>
-                            <Button size="sm" variant="danger" onClick={() => deleteUser(user.id)}>
-                                Delete
-                            </Button>
+                            {loggedInUser?.type === "MANAGER" ? (
+                                <Button size="sm" variant="danger" onClick={deleteUser(user.id)}>
+                                    Delete
+                                </Button>
+                            ) : null}
                         </td>
                     </tr>
                 ))}

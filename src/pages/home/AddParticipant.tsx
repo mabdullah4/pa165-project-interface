@@ -3,7 +3,6 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router";
 import FormInput from "../../components/Form/FormInput";
-import FormSelect from "../../components/Form/FormSelect";
 import participantService from "../../service/participant";
 
 export interface AddParticipantProps {}
@@ -22,7 +21,10 @@ const AddParticipant: React.FC<AddParticipantProps> = () => {
     } = useForm<IParticipantForm>();
 
     const onAddParticipant = (data: IParticipantForm) => {
-        participantService.create(parseInt(eventId), data).then(() => replace("/"));
+        participantService
+            .create(parseInt(eventId), data)
+            .then(() => replace(`/pa165/participants/${eventId}`))
+            .catch(console.error);
     };
 
     return (

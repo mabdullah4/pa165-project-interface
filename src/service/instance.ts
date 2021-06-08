@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { toast } from "react-toastify";
 import store from "../store";
 
@@ -19,9 +19,7 @@ service.interceptors.request.use((config: AxiosRequestConfig) => {
 });
 
 service.interceptors.response.use(
-    (response: AxiosResponse) => {
-        return response;
-    },
+    (response) => response,
     (error: AxiosError) => {
         if (error.response?.status === 403) {
             toast("This operation is forbidden.", {
@@ -33,7 +31,7 @@ service.interceptors.response.use(
             });
         }
 
-        return error;
+        return Promise.reject(error);
     }
 );
 
